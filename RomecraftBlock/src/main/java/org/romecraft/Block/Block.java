@@ -13,7 +13,7 @@ public class Block extends JavaPlugin implements Listener
 	@Override
 	public void onEnable()
 	{
-
+		getLogger().
 	}
 	@Override
 	public void onDisable()
