@@ -1,4 +1,4 @@
-package org.romecraft.RomecraftBlock;
+package org.romecraft.Block;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
