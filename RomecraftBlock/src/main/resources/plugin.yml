@@ -1,0 +1,3 @@
+name: RomecraftBlock
+main: org.romecraft.Block.Block
+version: 1.0
