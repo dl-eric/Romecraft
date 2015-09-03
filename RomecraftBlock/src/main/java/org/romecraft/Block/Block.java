@@ -1,5 +1,7 @@
 package org.romecraft.Block;
 
+import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,10 +14,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Block extends JavaPlugin implements Listener
 {
-	
+	private ArrayList<String> blocking;
+
 	@Override
 	public void onEnable()
 	{
+		blocking = new ArrayList<String>();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 	}
 	@Override
@@ -23,26 +27,43 @@ public class Block extends JavaPlugin implements Listener
 	{
 
 	}
-	
+
 	@EventHandler
 	public void onClick(final PlayerInteractEvent e)
 	{
-		if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+		final String playername = e.getPlayer().getName();
+		//if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+		if (e.getPlayer().isBlocking() && blocking.contains(playername))
+			return;
+		else if (e.getPlayer().isBlocking())
 		{
-			
+			blocking.add(playername);
+
+			Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+				public void run()
+				{
+					blocking.remove(playername);
+				}
+			}, 2 * 20); //20 ticks per second. 2*20 = 2 seconds.
 		}
 	}
-	
+
 	@EventHandler(ignoreCancelled = true)
 	public void onDamage(EntityDamageByEntityEvent e)
 	{
+		if(!(e.getEntity() instanceof Player)) 
+			return;
+
 		Player p = (Player) e.getEntity();
 
-		if(e.getCause() == DamageCause.ENTITY_ATTACK && p.isBlocking())
+		if(blocking.contains(p.getName()))
 		{
-			if (p.getLocation().getDirection().dot(e.getDamager().getLocation().getDirection()) < 0)
+			if(e.getCause() == DamageCause.ENTITY_ATTACK)
 			{
-				e.setCancelled(true);
+				if (p.getLocation().getDirection().dot(e.getDamager().getLocation().getDirection()) < 0)
+				{
+					e.setCancelled(true);
+				}
 			}
 		}
 	}
