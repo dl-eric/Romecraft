@@ -34,7 +34,6 @@ public class Block extends JavaPlugin implements Listener
 	public void onClick(final PlayerInteractEvent e)
 	{
 		final String playername = e.getPlayer().getName();
-		//if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		if (e.getPlayer().isBlocking() && blocking.contains(playername))
 			return;
 		if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
