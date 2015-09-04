@@ -3,9 +3,11 @@ package org.romecraft.Block;
 import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 //import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -35,16 +37,19 @@ public class Block extends JavaPlugin implements Listener
 		//if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		if (e.getPlayer().isBlocking() && blocking.contains(playername))
 			return;
-		else if (e.getPlayer().isBlocking())
+		if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK))
 		{
-			blocking.add(playername);
+			if(e.getMaterial().equals(Material.GOLD_SWORD) || e.getMaterial().equals(Material.IRON_SWORD) || e.getMaterial().equals(Material.DIAMOND_SWORD) || e.getMaterial().equals(Material.WOOD_SWORD))
+			{			
+				blocking.add(playername);
 
-			Bukkit.getScheduler().runTaskLater(this, new Runnable() {
-				public void run()
-				{
-					blocking.remove(playername);
-				}
-			}, 2 * 20); //20 ticks per second. 2*20 = 2 seconds.
+				Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+					public void run()
+					{
+						blocking.remove(playername);
+					}
+				}, 1 * 20); //20 ticks per second. 2*20 = 2 seconds.
+			}
 		}
 	}
 
