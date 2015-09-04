@@ -23,11 +23,6 @@ public class Block extends JavaPlugin implements Listener
 		blocking = new ArrayList<String>();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 	}
-	@Override
-	public void onDisable()
-	{
-
-	}
 
 	@EventHandler
 	public void onClick(final PlayerInteractEvent e)
